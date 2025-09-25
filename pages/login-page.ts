@@ -1,4 +1,7 @@
+
 import { expect, type Locator, type Page } from "@playwright/test";
+// import { allure } from "allure-playwright";
+import * as allure from "allure-js-commons";
 
 export class LoginPage {
   readonly page: Page;
@@ -14,12 +17,22 @@ export class LoginPage {
   }
 
   async goto() {
-    await this.page.goto("https://www.saucedemo.com/v1/");
+    await allure.step("Navigate to login page", async () => {
+      await this.page.goto("https://www.saucedemo.com/v1/");
+    });
   }
 
+
+
   async login(username: string, password: string) {
-    await this.username_input.fill(username);
-    await this.password_input.fill(password);
-    await this.login_button.click();
+    await allure.step("Fill username", async () => {
+      await this.username_input.fill(username);
+    });
+    await allure.step("Fill password", async () => {
+      await this.password_input.fill(password);
+    });
+    await allure.step("Click login button", async () => {
+      await this.login_button.click();
+    });
   }
 }
