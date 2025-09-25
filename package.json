@@ -1,7 +1,6 @@
 {
   "name": "playwright-web",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {},
   "keywords": [],
@@ -10,5 +9,17 @@
   "devDependencies": {
     "@playwright/test": "^1.55.1",
     "@types/node": "^24.5.2"
-  }
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AbdelazizNassif/playwright-web.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AbdelazizNassif/playwright-web/issues"
+  },
+  "homepage": "https://github.com/AbdelazizNassif/playwright-web#readme",
+  "description": ""
 }

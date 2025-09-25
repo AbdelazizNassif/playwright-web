@@ -1,25 +1,42 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from "@playwright/test";
+import { LoginPage } from "../pages/login-page";
+import { HomePage } from "../pages/home-page.ts";
+import { Checkout } from "../pages/checkout.ts";
 
-test('has title', async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/v1/');
-  await page.getByRole('textbox', { name: 'Username' }).fill("standard_user");
-  await page.getByRole('textbox', { name: 'Password' }).fill("secret_sauce");
-  await page.getByRole('button', { name: 'LOGIN' }).click() ;
+let context: any;
+let page: any;
+let productName: any;
 
-  // // Expect a title "to contain" a substring.
-  // await expect(page).toHaveTitle(/Playwright/);
+test.describe.configure({ mode: "serial" });
 
-  await  page.waitForTimeout(20000);
+test.beforeAll("login as precondition", async ({ browser }) => {
+  context = await browser.newContext();
+  page = await context.newPage();
+  const loginPage: LoginPage = new LoginPage(page);
+  loginPage.goto();
+  loginPage.login("standard_user", "secret_sauce");
+  const homePage: HomePage = new HomePage(page);
+  expect(await homePage.verifyProductsPage()).toEqual("Products");
 });
 
-// test('get started link', async ({ page }) => {
-//   // await page.goto('https://playwright.dev/');
+test("add product to cart checkout", async ({}) => {
+  const homePage: HomePage = new HomePage(page);
+  await homePage.clickAddToCart();
+  productName = await homePage.getProductName();
+  await expect(await homePage.addToCart_button).toHaveText("REMOVE");
+});
 
-//   // // Click the get started link.
-//   // await page.getByRole('link', { name: 'Get started' }).click();
+test("complete checkout", async ({}) => {
+    const homePage: HomePage = new HomePage(page);
+    await homePage.clickShoppingCart();
+    const checkoutPage: Checkout = new Checkout(page);
 
-//   // // Expects page to have a heading with the name of Installation.
-//   // await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
-//     await  page.waitForTimeout(10000);
+  await expect(checkoutPage.productInCart).toHaveText(
+    productName
+  );
+  await checkoutPage.completeCheckout();
+  await expect(await checkoutPage.getOrderCompletionSuccessMessage()).toEqual(
+    "THANK YOU FOR YOUR ORDER"
+  );
 
-// });
+});
