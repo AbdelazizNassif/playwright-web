@@ -19,7 +19,7 @@ test.beforeAll("login as precondition", async ({ browser }) => {
   expect(await homePage.verifyProductsPage()).toEqual("Products");
 });
 
-test("add product to cart checkout", async ({}) => {
+test("add product to cart", async ({}) => {
   const homePage: HomePage = new HomePage(page);
   await homePage.clickAddToCart();
   productName = await homePage.getProductName();
