@@ -34,7 +34,7 @@ test("complete checkout", async ({}) => {
   await expect(checkoutPage.productInCart).toHaveText(
     productName
   );
-  await checkoutPage.completeCheckout();
+  await checkoutPage.completeCheckout("John", "Doef", "123456");
   await expect(await checkoutPage.getOrderCompletionSuccessMessage()).toEqual(
     "THANK YOU FOR YOUR ORDER"
   );

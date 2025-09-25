@@ -29,13 +29,12 @@ export class Checkout {
     return await this.productInCart.textContent();
   }
 
-  async completeCheckout() {
+  async completeCheckout(name: string, lastName: string, postalCode: string ) {
     await this.checkout_button.click();
     await this.firstName_input.fill("John");
     await this.lastName_input.fill("Doef");
     await this.postalCode_input.fill("123456");
     await this.continue_button.click();
-    await expect(this.productInCart).toHaveText("Sauce Labs Backpack");
     await this.finish_button.click();
   }
 
