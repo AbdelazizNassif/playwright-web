@@ -16,27 +16,24 @@ test.beforeAll("login as precondition", async ({ browser }) => {
   loginPage.goto();
   loginPage.login("standard_user", "secret_sauce");
   const homePage: HomePage = new HomePage(page);
-  expect(await homePage.verifyProductsPage()).toEqual("Products");
+  expect(await homePage.products_header).toHaveText("Products");
 });
 
 test("add product to cart", async ({}) => {
   const homePage: HomePage = new HomePage(page);
   await homePage.clickAddToCart();
-  productName = await homePage.getProductName();
+  productName = await homePage.productToAdd.textContent();
   await expect(await homePage.addToCart_button).toHaveText("REMOVE");
 });
 
 test("complete checkout", async ({}) => {
-    const homePage: HomePage = new HomePage(page);
-    await homePage.clickShoppingCart();
-    const checkoutPage: Checkout = new Checkout(page);
-
-  await expect(checkoutPage.productInCart).toHaveText(
-    productName
-  );
+  const homePage: HomePage = new HomePage(page);
+  await homePage.clickShoppingCart();
+  const checkoutPage: Checkout = new Checkout(page);
+  await expect(checkoutPage.productInCart).toBeEnabled();
+  await expect(checkoutPage.productInCart).toHaveText("Sauce Labs Backpack");
   await checkoutPage.completeCheckout("John", "Doef", "123456");
-  await expect(await checkoutPage.getOrderCompletionSuccessMessage()).toEqual(
+  await expect(checkoutPage.thankYouMessage).toHaveText(
     "THANK YOU FOR YOUR ORDER"
   );
-
 });

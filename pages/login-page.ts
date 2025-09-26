@@ -1,6 +1,5 @@
 
 import { expect, type Locator, type Page } from "@playwright/test";
-// import { allure } from "allure-playwright";
 import * as allure from "allure-js-commons";
 
 export class LoginPage {
@@ -25,14 +24,11 @@ export class LoginPage {
 
 
   async login(username: string, password: string) {
-    await allure.step("Fill username", async () => {
+    await allure.step("Login with user name and password", async () => {
       await this.username_input.fill(username);
-    });
-    await allure.step("Fill password", async () => {
-      await this.password_input.fill(password);
-    });
-    await allure.step("Click login button", async () => {
+            await this.password_input.fill(password);
       await this.login_button.click();
+
     });
   }
 }
